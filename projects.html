@@ -651,6 +651,25 @@
                 const response = await fetch('https://api.github.com/users/imharsha33/repos?per_page=100&sort=updated');
                 const repos = await response.json();
                 
+                const customDescriptions = {
+                    "Bujji": "An intelligent virtual assistant designed for comprehensive task management and information retrieval.",
+                    "BUJJI-BOT": "A robust chatbot application focusing on automated user interactions and support.",
+                    "Bujji-Chatbot": "An AI-powered conversational agent providing intelligent responses. Includes an Android app.",
+                    "CMS-JAVA": "A robust Content Management System built with Java for efficient data handling.",
+                    "EARTH-TWIN": "A web application simulating or exploring planetary environmental data.",
+                    "EndlessRunner": "A fast-paced endless runner game with engaging mechanics and high-score tracking.",
+                    "FreshGuard": "An application aimed at monitoring food freshness or managing inventory efficiently.",
+                    "geobuild-AI": "An AI-driven platform for geographic data analysis and structural planning.",
+                    "Home-Interior": "A visualization tool for interior design and home decor planning.",
+                    "Medi-Sync": "A healthcare management system synchronizing patient data and medical records.",
+                    "Portfolio": "My personal portfolio website showcasing my skills, projects, and professional journey.",
+                    "QR.Zip.Share": "A utility for compressing files and sharing them securely via QR codes.",
+                    "Research-Notebook-Structurer": "A tool designed to help researchers organize and structure their notes efficiently.",
+                    "SkillBridge": "A platform connecting individuals with opportunities to learn and develop new skills.",
+                    "SkillGapAnalyser": "An analytical tool to assess and bridge the gap between current and required skills.",
+                    "WoundWise": "A medical application focusing on wound analysis and healthcare tracking."
+                };
+
                 let html = '';
                 repos.forEach(repo => {
                     const date = new Date(repo.updated_at).getFullYear();
@@ -667,6 +686,15 @@
                         </a>`;
                     }
                     
+                    let apkBtn = '';
+                    if (repo.name.toLowerCase() === 'bujji-chatbot') {
+                        apkBtn = `
+                        <a href="bujji-debug.apk" download class="project-btn btn-secondary" style="background: rgba(76, 175, 80, 0.1); border-color: #4CAF50; color: #4CAF50;">
+                            <svg viewBox="0 0 24 24" style="fill: #4CAF50;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                            Download APK
+                        </a>`;
+                    }
+                    
                     let tagsHtml = '';
                     if (repo.language) tagsHtml += `<span class="tag">${repo.language}</span>`;
                     if (repo.topics) {
@@ -674,6 +702,8 @@
                             tagsHtml += `<span class="tag">${t}</span>`;
                         });
                     }
+
+                    const projectDesc = customDescriptions[repo.name] || repo.description || 'No description provided.';
 
                     html += `
             <div class="project-card">
@@ -690,7 +720,7 @@
                 </div>
                 <div class="project-body">
                     <p class="project-description">
-                        ${repo.description || 'No description provided.'}
+                        ${projectDesc}
                     </p>
                     <div class="project-stats">
                         <div class="stat">
@@ -708,6 +738,7 @@
                             View Code
                         </a>
                         ${homepageBtn}
+                        ${apkBtn}
                     </div>
                 </div>
             </div>`;
